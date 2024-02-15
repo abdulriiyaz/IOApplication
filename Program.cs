@@ -15,7 +15,7 @@ namespace IOApp
             Console.Write("\nPlease enter yes or no.(y/n): ");
             string? y = inp_.GetYesNo();
 
-            //gui_.DisplayInput(inp_);
+            gui_.DisplayInput(inp_);
 
         }
         public static void Main(string[] args)
@@ -24,10 +24,10 @@ namespace IOApp
             GUI gui = new();
             FileIO file = new();
 
-            //GetUserInputs(inp, gui);
+            GetUserInputs(inp, gui);
             try
             {
-                //file.WriteToFile("names.dat", inp);
+                file.WriteToFile("names.dat", inp);
                 file.ReadFromFile("names.dat");
             }
             catch (IOException err)
