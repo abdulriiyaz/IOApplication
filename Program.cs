@@ -11,7 +11,7 @@
             return n % 3 == 0;
         }
 
-        public IEnumerable<int> Filter(IEnumerable<int> source, IntPredicate predicate)
+        public static IEnumerable<int> Filter(IEnumerable<int> source, IntPredicate predicate)
         {
             var list = new List<int>();
             foreach (var item in source)
@@ -27,14 +27,11 @@
         {
             var program = new Program();
             var list = new List<int> { 1, 2, 3, 4, 5, 6, 7, 8, 9 };
-            var result = program.Filter(list, program.isMod3);
+            var result = Filter(list, program.isMod3);
             foreach (var item in result)
             {
                 Console.WriteLine(item);
             }
-
-
         }
-
     }
 }
