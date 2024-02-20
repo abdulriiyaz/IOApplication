@@ -1,59 +1,40 @@
 ﻿namespace IOApp
 {
-    delegate void WriteOutputToConsole(string? output);
+    delegate bool IntPredicate(int num);
 
 
-    class BlahBlah
-    {
-        private readonly string _prefix;
-        public BlahBlah(string prefix)
-        {
-            _prefix = prefix;
-        }
 
-        public void DoStuff(string? output)
-        {
-            Console.WriteLine("prefix: {0} - output: {1}", _prefix, output);
-        }
-    }
     class Program
     {
-        public static void Main(string[] args)
+        public bool isMod3(int n)
         {
-            BlahBlah b1 = new BlahBlah("b1");
-            BlahBlah b2 = new BlahBlah("b2");
-
-            Run(b1.DoStuff, 1, 3);
-            Run(b2.DoStuff, 1, 5);
-
-
+            return n % 3 == 0;
         }
 
-        public static void Run(WriteOutputToConsole writeOutputToConsole, int start, int end)
+        public IEnumerable<int> Filter(IEnumerable<int> source, IntPredicate predicate)
         {
-            for (int i = start; i < end; i++)
+            var list = new List<int>();
+            foreach (var item in source)
             {
-                var div3 = i % 3 == 0;
-                var div5 = i % 5 == 0;
-
-                if (div3 && div5)
+                if (predicate(item))
                 {
-                    writeOutputToConsole("FizzBuzz");
-                }
-                else if (div3)
-                {
-                    writeOutputToConsole("Fizz");
-                }
-                else if (div5)
-                {
-                    writeOutputToConsole("Buzz");
-                }
-                else
-                {
-                    writeOutputToConsole(i.ToString());
+                    list.Add(item);
                 }
             }
+            return list;
+        }
+        public static void Main(string[] args)
+        {
+            var program = new Program();
+            var list = new List<int> { 1, 2, 3, 4, 5, 6, 7, 8, 9 };
+            var result = program.Filter(list, program.isMod3);
+            foreach (var item in result)
+            {
+                Console.WriteLine(item);
+            }
+
 
         }
+
     }
 }
