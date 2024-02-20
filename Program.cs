@@ -26,14 +26,21 @@
         public static void Main(string[] args)
         {
             var program = new Program();
-            var list = new List<int> { 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 15, 20 };
+            var number = 10;
+            var list = new List<int> { 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17 };
             //var result = Filter(list, n => n % 3 == 0);
             //var result = Filter(list, n => n % 5 == 0);
-            var result = Filter(list, n => n % 3 == 0 && n % 5 == 0);
+            var result = Filter(list, n =>
+            {
+                number++;
+                return (n % 3 == 0 && n % 5 == 0);
+            });
             foreach (var item in result)
             {
                 Console.WriteLine(item);
             }
+            Console.WriteLine(number);
+            Console.ReadKey();
         }
     }
 }
