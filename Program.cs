@@ -1,40 +1,53 @@
-﻿using IOApplication.Classes;
-
-namespace IOApp
+﻿namespace IOApp
 {
     class Program
     {
-        static void GetUserInputs(Input inp_, GUI gui_)
+        class FuncDictClass
         {
-            Console.Write("Please enter a number: ");
-            int i = inp_.GetInt();
+            public Dictionary<string, Func<int>> FuncDict { get; set; }
 
-            Console.Write("\nPlease enter a string: ");
-            string? s = inp_.GetString();
+            public FuncDictClass()
+            {
+                FuncDict = new Dictionary<string, Func<int>>();
+            }
 
-            Console.Write("\nPlease enter yes or no.(y/n): ");
-            string? y = inp_.GetYesNo();
+            public void AddFunctions(string key, Func<int> func)
+            {
+                FuncDict[key] = func;
+            }
 
-            gui_.DisplayInput(inp_);
+            public int ExecuteFuncs(string key)
+            {
+                if (FuncDict.ContainsKey(key))
+                {
+                    return FuncDict[key]();
+                }
+                else
+                {
+                    throw new KeyNotFoundException("Key not Found to be executed");
+                }
+            }
 
         }
+
         public static void Main(string[] args)
         {
-            Input inp = new();
-            GUI gui = new();
-            FileIO file = new();
+            FuncDictClass fdc = new FuncDictClass();
 
-            GetUserInputs(inp, gui);
-            try
-            {
-                file.WriteToFile("names.dat", inp);
-                file.ReadFromFile("names.dat");
-            }
-            catch (IOException err)
-            {
-                Console.WriteLine(err);
-            }
-            Console.ReadKey();
+            fdc.AddFunctions("1", () => Function1());
+            fdc.AddFunctions("2", () => Function2());
+
+            //execute functions in line
+
+            Console.WriteLine(fdc.ExecuteFuncs("2"));
+            Console.WriteLine(fdc.ExecuteFuncs("1"));
+            //Console.WriteLine(fdc.ExecuteFuncs("4"));
+
+            static int Function1()
+            { return 10; }
+
+            static int Function2()
+            { return 20; }
         }
     }
 }
