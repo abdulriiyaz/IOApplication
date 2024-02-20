@@ -6,7 +6,7 @@
 
     class Program
     {
-        public bool IsMod3(int n)
+        public static bool IsMod3(int n)
         {
             return n % 3 == 0;
         }
@@ -27,7 +27,7 @@
         {
             var program = new Program();
             var list = new List<int> { 1, 2, 3, 4, 5, 6, 7, 8, 9 };
-            var result = Filter(list, program.IsMod3);
+            var result = Filter(list, IsMod3);
             foreach (var item in result)
             {
                 Console.WriteLine(item);
