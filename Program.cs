@@ -18,15 +18,6 @@
     }
     class Program
     {
-        static void WriteOutputToConsole(string? output)
-        {
-            Console.WriteLine(output);
-        }
-
-        static void WriteOutputToConsole2(string? output)
-        {
-            Console.WriteLine(output);
-        }
         public static void Main(string[] args)
         {
             BlahBlah b1 = new BlahBlah("b1");
