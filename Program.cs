@@ -6,10 +6,10 @@
 
     class Program
     {
-        public static bool IsMod3(int n)
-        {
-            return n % 3 == 0;
-        }
+        //public static bool IsMod3(int n)
+        //{
+        //    return n % 3 == 0;
+        //}
 
         public static IEnumerable<int> Filter(IEnumerable<int> source, IntPredicate predicate)
         {
@@ -26,8 +26,10 @@
         public static void Main(string[] args)
         {
             var program = new Program();
-            var list = new List<int> { 1, 2, 3, 4, 5, 6, 7, 8, 9 };
-            var result = Filter(list, IsMod3);
+            var list = new List<int> { 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 15, 20 };
+            //var result = Filter(list, n => n % 3 == 0);
+            //var result = Filter(list, n => n % 5 == 0);
+            var result = Filter(list, n => n % 3 == 0 && n % 5 == 0);
             foreach (var item in result)
             {
                 Console.WriteLine(item);
