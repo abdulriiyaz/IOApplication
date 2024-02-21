@@ -44,8 +44,18 @@
                 new Person("Jane", "Doe"),
                 new Person("John", "Smith"),
             };
-            ppl.Map(p => p._firstName).ToList().ForEach(Console.WriteLine);
-            ppl.Filter(p => p._firstName == "John").ToList().ForEach(Console.WriteLine);
+            //ppl.Map(p => p._firstName).ToList().ForEach(Console.WriteLine);
+            //ppl.Filter(p => p._firstName == "John").ToList().ForEach(Console.WriteLine);
+
+            //var fPPl = ppl
+            //    .Filter(p => p._firstName.EndsWith("N", StringComparison.CurrentCultureIgnoreCase))
+            //    .Map(p => p._firstName);
+
+            var fPPl = ppl
+               .Where(p => p._firstName.EndsWith("N", StringComparison.CurrentCultureIgnoreCase))
+               .Select(p => p._firstName);
+
+            fPPl.ToList().ForEach(Console.WriteLine);
             Console.ReadKey();
         }
 
