@@ -11,6 +11,29 @@
             _lastName = lastName;
         }
     }
+
+    static class EnumerableExtension
+    {
+        public static IEnumerable<TResult> Map<TSource, TResult>(this IEnumerable<TSource> that, Func<TSource, TResult> projection)
+        {
+            foreach (var item in that)
+            {
+                yield return projection(item);
+            }
+        }
+
+        public static IEnumerable<T> Filter<T>(this IEnumerable<T> that, Func<T, bool> predicate)
+        {
+            foreach (var item in that)
+            {
+                if (predicate(item))
+                {
+                    yield return item;
+                }
+            }
+        }
+
+    }
     class Program
     {
         public static void Main(string[] args)
@@ -21,31 +44,11 @@
                 new Person("Jane", "Doe"),
                 new Person("John", "Smith"),
             };
-            IEnumerable<Person> ppl2 = Filter(ppl, p => p._firstName.StartsWith("J", StringComparison.CurrentCultureIgnoreCase));
-
-            IEnumerable<string> firstNames = Map<Person, string>(ppl2, p => p._firstName);
-            IEnumerable<string> lastNames = Map<Person, string>(ppl2, p => p._lastName);
-
+            ppl.Map(p => p._firstName).ToList().ForEach(Console.WriteLine);
+            ppl.Filter(p => p._firstName == "John").ToList().ForEach(Console.WriteLine);
             Console.ReadKey();
         }
 
-        static IEnumerable<TResult> Map<TSource, TResult>(IEnumerable<TSource> source, Func<TSource, TResult> projection)
-        {
-            foreach (var item in source)
-            {
-                yield return projection(item);
-            }
-        }
 
-        static IEnumerable<T> Filter<T>(IEnumerable<T> source, Func<T, bool> predicate)
-        {
-            foreach (var item in source)
-            {
-                if (predicate(item))
-                {
-                    yield return item;
-                }
-            }
-        }
     }
 }
