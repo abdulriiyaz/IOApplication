@@ -63,7 +63,24 @@
                 where p._firstName.EndsWith("N", StringComparison.CurrentCultureIgnoreCase)
                 select p._firstName;
 
+
+            //Enumerable Class has static methods to use.
+            var num = Enumerable.Range(0, 99)
+                .Where(n => n % 2 == 0)
+                .Select(n => n * n);
+
+            //instantiate empty int enumerble
+            var num2 = Enumerable.Empty<int>();
+
+            //instantiate enumerable with single element
+            Enumerable.Repeat("Riyaz", 20)
+                .ToList()
+                .ForEach(Console.WriteLine);
+
+
+
             fPPl.ToList().ForEach(Console.WriteLine);
+            fPPl2.ToList().ForEach(Console.WriteLine);
             Console.ReadKey();
         }
 
