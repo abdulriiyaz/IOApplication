@@ -1,59 +1,28 @@
-﻿namespace IOApp
+﻿public class Program
 {
-    delegate void WriteOutputToConsole(string? output);
+    // Event declaration using Action delegate
+    public event Action<object, EventArgs> MyEvent;
 
-
-    class BlahBlah
+    // Method to raise the event
+    protected virtual void OnMyEvent()
     {
-        private readonly string _prefix;
-        public BlahBlah(string prefix)
-        {
-            _prefix = prefix;
-        }
-
-        public void DoStuff(string? output)
-        {
-            Console.WriteLine("prefix: {0} - output: {1}", _prefix, output);
-        }
+        MyEvent?.Invoke(this, EventArgs.Empty);
     }
-    class Program
+
+    public static void Main(string[] args)
     {
-        public static void Main(string[] args)
+        Program instance = new Program();
+
+        // Event handler method using Action delegate
+        Action<object, EventArgs> eventHandler = (sender, e) =>
         {
-            BlahBlah b1 = new BlahBlah("b1");
-            BlahBlah b2 = new BlahBlah("b2");
+            Console.WriteLine("Event handled successfully!");
+        };
 
-            Run(b1.DoStuff, 1, 3);
-            Run(b2.DoStuff, 1, 5);
+        // Subscribe to the event
+        instance.MyEvent += eventHandler;
 
-
-        }
-
-        public static void Run(WriteOutputToConsole writeOutputToConsole, int start, int end)
-        {
-            for (int i = start; i < end; i++)
-            {
-                var div3 = i % 3 == 0;
-                var div5 = i % 5 == 0;
-
-                if (div3 && div5)
-                {
-                    writeOutputToConsole("FizzBuzz");
-                }
-                else if (div3)
-                {
-                    writeOutputToConsole("Fizz");
-                }
-                else if (div5)
-                {
-                    writeOutputToConsole("Buzz");
-                }
-                else
-                {
-                    writeOutputToConsole(i.ToString());
-                }
-            }
-
-        }
+        // Raise the event
+        instance.OnMyEvent();
     }
 }
