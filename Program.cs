@@ -4,7 +4,7 @@
     {
         void Method();
     }
-    class LinkedList<T> where T : IMyInterface
+    class LinkedList<T> where T : class, IMyInterface
     {
         class Node
         {
