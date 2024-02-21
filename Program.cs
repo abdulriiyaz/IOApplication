@@ -1,28 +1,40 @@
 ﻿namespace IOApp
+
 {
+    class Person
+    {
+        public string _firstName { get; private set; }
+        public string _lastName { get; private set; }
+        public Person(string firstName, string lastName)
+        {
+            _firstName = firstName;
+            _lastName = lastName;
+        }
+    }
     class Program
     {
         public static void Main(string[] args)
         {
-            var ll = new List<int> { 1, 2, 3, 4, 5, 6, 7, 8, 9, 10 };
-
-            var odd = Filter<int>(ll, i => i % 2 != 0);
-
-            var even = Filter<int>(ll, i => i % 2 == 0);
-
-            Console.Write("ODD:");
-            foreach (var item in odd)
+            List<Person> ppl = new List<Person>
             {
-                Console.WriteLine(item + " ");
-            }
+                new Person("John", "Doe"),
+                new Person("Jane", "Doe"),
+                new Person("John", "Smith"),
+            };
+            IEnumerable<Person> ppl2 = Filter(ppl, p => p._firstName.StartsWith("J", StringComparison.CurrentCultureIgnoreCase));
 
-            Console.Write("EVEN:");
-            foreach (var item in even)
-            {
-                Console.WriteLine(item + " ");
-            }
+            IEnumerable<string> firstNames = Map<Person, string>(ppl2, p => p._firstName);
+            IEnumerable<string> lastNames = Map<Person, string>(ppl2, p => p._lastName);
 
             Console.ReadKey();
+        }
+
+        static IEnumerable<TResult> Map<TSource, TResult>(IEnumerable<TSource> source, Func<TSource, TResult> projection)
+        {
+            foreach (var item in source)
+            {
+                yield return projection(item);
+            }
         }
 
         static IEnumerable<T> Filter<T>(IEnumerable<T> source, Func<T, bool> predicate)
@@ -35,16 +47,5 @@
                 }
             }
         }
-
-
-        //Constraints on generics type parameters
-
-        //method which returns instance of type T with the help of keyowrd 'where' and 'new()'
-
-
-        //static T Hey<T>() where T : new()
-        //{
-        //    return new T();
-        //}
     }
 }
