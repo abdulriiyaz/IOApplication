@@ -1,39 +1,35 @@
-﻿using IOApplication.Classes;
-
-namespace IOApp
+﻿namespace IOApp
 {
+    interface IMyInterface
+    {
+        void Method();
+    }
+    class LinkedList<T> where T : IMyInterface
+    {
+        class Node
+        {
+            public T Value;
+            public Node Next;
+        }
+
+        private Node Head;
+        public int Count { get; private set; }
+
+        public void Add(T value)
+        {
+            var node = new Node();
+            node.Value.Method();
+        }
+        public void Remove(T value)
+        { }
+        public T Get(int index)
+        { return default(T); }
+    }
     class Program
     {
-        static void GetUserInputs(Input inp_, GUI gui_)
-        {
-            Console.Write("Please enter a number: ");
-            int i = inp_.GetInt();
-
-            Console.Write("\nPlease enter a string: ");
-            string? s = inp_.GetString();
-
-            Console.Write("\nPlease enter yes or no.(y/n): ");
-            string? y = inp_.GetYesNo();
-
-            gui_.DisplayInput(inp_);
-
-        }
         public static void Main(string[] args)
         {
-            Input inp = new();
-            GUI gui = new();
-            FileIO file = new();
 
-            GetUserInputs(inp, gui);
-            try
-            {
-                file.WriteToFile("names.dat", inp);
-                file.ReadFromFile("names.dat");
-            }
-            catch (IOException err)
-            {
-                Console.WriteLine(err);
-            }
             Console.ReadKey();
         }
     }
