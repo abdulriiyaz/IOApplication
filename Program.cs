@@ -44,43 +44,44 @@
                 new Person("Jane", "Doe"),
                 new Person("John", "Smith"),
             };
-            //ppl.Map(p => p._firstName).ToList().ForEach(Console.WriteLine);
-            //ppl.Filter(p => p._firstName == "John").ToList().ForEach(Console.WriteLine);
+            ppl.Map(p => p._firstName).ToList().ForEach(Console.WriteLine);
+            ppl.Filter(p => p._firstName == "John").ToList().ForEach(Console.WriteLine);
 
             //var fPPl = ppl
             //    .Filter(p => p._firstName.EndsWith("N", StringComparison.CurrentCultureIgnoreCase))
             //    .Map(p => p._firstName);
 
-            //METHOD SYNTAX
-            var fPPl = ppl
-               .Where(p => p._firstName.EndsWith("N", StringComparison.CurrentCultureIgnoreCase))
-               .Select(p => p._firstName);
+
+            ////METHOD SYNTAX
+            //var fPPl = ppl
+            //   .Where(p => p._firstName.EndsWith("N", StringComparison.CurrentCultureIgnoreCase))
+            //   .Select(p => p._firstName);
 
 
-            //QUERY SYNTAX
-            var fPPl2 =
-                from p in ppl
-                where p._firstName.EndsWith("N", StringComparison.CurrentCultureIgnoreCase)
-                select p._firstName;
+            ////QUERY SYNTAX
+            //var fPPl2 =
+            //    from p in ppl
+            //    where p._firstName.EndsWith("N", StringComparison.CurrentCultureIgnoreCase)
+            //    select p._firstName;
 
 
-            //Enumerable Class has static methods to use.
-            var num = Enumerable.Range(0, 99)
-                .Where(n => n % 2 == 0)
-                .Select(n => n * n);
+            ////Enumerable Class has static methods to use.
+            //var num = Enumerable.Range(0, 99)
+            //    .Where(n => n % 2 == 0)
+            //    .Select(n => n * n);
 
-            //instantiate empty int enumerble
-            var num2 = Enumerable.Empty<int>();
+            ////instantiate empty int enumerble
+            //var num2 = Enumerable.Empty<int>();
 
-            //instantiate enumerable with single element
+            ////instantiate enumerable with single element
             Enumerable.Repeat("Riyaz", 20)
                 .ToList()
                 .ForEach(Console.WriteLine);
 
 
 
-            fPPl.ToList().ForEach(Console.WriteLine);
-            fPPl2.ToList().ForEach(Console.WriteLine);
+            //fPPl.ToList().ForEach(Console.WriteLine);
+            //fPPl2.ToList().ForEach(Console.WriteLine);
             Console.ReadKey();
         }
 
