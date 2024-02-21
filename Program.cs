@@ -65,11 +65,8 @@
         {
             //use MySelect
             var num = new List<int> { 1, 2, 3, 4, 5 };
-
             num.MySelect(x => x * 2).ToList().ForEach(x => Console.WriteLine(x));
-
             num.MyWhere(x => x == 5).ToList().ForEach(x => Console.WriteLine(x));
-
             var i = num.MyFirst();
             Console.WriteLine(i);
             Console.ReadKey();
