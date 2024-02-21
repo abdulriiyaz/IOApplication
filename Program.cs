@@ -51,9 +51,17 @@
             //    .Filter(p => p._firstName.EndsWith("N", StringComparison.CurrentCultureIgnoreCase))
             //    .Map(p => p._firstName);
 
+            //METHOD SYNTAX
             var fPPl = ppl
                .Where(p => p._firstName.EndsWith("N", StringComparison.CurrentCultureIgnoreCase))
                .Select(p => p._firstName);
+
+
+            //QUERY SYNTAX
+            var fPPl2 =
+                from p in ppl
+                where p._firstName.EndsWith("N", StringComparison.CurrentCultureIgnoreCase)
+                select p._firstName;
 
             fPPl.ToList().ForEach(Console.WriteLine);
             Console.ReadKey();
