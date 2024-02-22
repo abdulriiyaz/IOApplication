@@ -37,25 +37,34 @@ namespace IOApp
 
     static class EnumerableExtension
     {
+        public static int Aggregate<TSource>(this IEnumerable<TSource> that, Func<TSource, int> accumulator)
+        {
+            int sum = 0;
+            foreach (var item in that)
+                sum += accumulator(item);
+            return sum;
+        }
         public static int MyCount<TSource>(this IEnumerable<TSource> that, Func<TSource, bool> predicate)
         {
-            int count = 0;
+            //Microsoft Implementation (performant)
 
+            var collection = that as ICollection<TSource>;
+            if (collection != null)
+                return collection.Count;
+
+            int count = 0;
             foreach (var item in that)
-            {
                 if (predicate(item))
                     count++;
-            }
-            return count;
 
+            return count;
         }
         public static int MyCount<T>(this IEnumerable<T> that)
         {
             int count = 0;
             foreach (var item in that)
-            {
                 count++;
-            }
+
             return count;
         }
 
@@ -115,13 +124,16 @@ namespace IOApp
         {
             //use MySelect
             var num = new List<int> { 1, 2, 3, 4, 5 };
+            var num2 = new List<int> { 2, 2, 2 };
 
-            num.MySelect(x => x * 2).ToList().ForEach(x => Console.WriteLine(x));
-            num.MyWhere(x => x == 5).ToList().ForEach(x => Console.WriteLine(x));
+            //num.MySelect(x => x * 2).ToList().ForEach(x => Console.WriteLine(x));
+            //num.MyWhere(x => x == 5).ToList().ForEach(x => Console.WriteLine(x));
 
-            Console.WriteLine(num.MyFirst());
-            Console.WriteLine(num.MyCount());
-            Console.WriteLine(num.MyCount(x => x > 2));
+            //Console.WriteLine(num.MyFirst());
+            //Console.WriteLine(num.MyCount());
+            //Console.WriteLine(num.MyCount(x => x > 2));
+            Console.WriteLine(num.Aggregate(x => x));
+            Console.WriteLine(num2.Aggregate(x => x));
 
             Console.ReadKey();
         }
