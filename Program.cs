@@ -37,13 +37,6 @@ namespace IOApp
 
     static class EnumerableExtension
     {
-        public static int Aggregate<TSource>(this IEnumerable<TSource> that, Func<TSource, int> accumulator)
-        {
-            int sum = 0;
-            foreach (var item in that)
-                sum += accumulator(item);
-            return sum;
-        }
         public static int MyCount<TSource>(this IEnumerable<TSource> that, Func<TSource, bool> predicate)
         {
             //Microsoft Implementation (performant)
@@ -117,6 +110,16 @@ namespace IOApp
 
             throw new InvalidOperationException();
         }
+
+        public static TAcc MyAggregate<TAcc, TSource>(this IEnumerable<TSource> that, TAcc seed, Func<TAcc, TSource, TAcc> accumulator)
+        {
+            var sum = seed;
+            foreach (var item in that)
+            {
+                sum = accumulator(sum, item);
+            }
+            return sum;
+        }
     }
     class Program
     {
@@ -132,8 +135,10 @@ namespace IOApp
             //Console.WriteLine(num.MyFirst());
             //Console.WriteLine(num.MyCount());
             //Console.WriteLine(num.MyCount(x => x > 2));
-            Console.WriteLine(num.Aggregate(x => x));
-            Console.WriteLine(num2.Aggregate(x => x));
+            //Console.WriteLine(num.Aggregate(0, (a, i) => a + i));
+            Console.WriteLine(num2.Aggregate(0, (a, i) => a + i));
+            Console.WriteLine(num2.MyAggregate(0, (a, i) => a + i));
+
 
             Console.ReadKey();
         }
