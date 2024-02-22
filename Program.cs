@@ -72,7 +72,12 @@ namespace IOApp
             if (source == null)
                 throw new ArgumentNullException("Source");
 
-            return source.First();
+            foreach (var item in source)
+            {
+                return item;
+            }
+
+            throw new InvalidOperationException();
         }
     }
     class Program
