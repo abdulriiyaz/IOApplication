@@ -20,6 +20,15 @@
 
 ///7. MyCount<T>(this IEnumerable<T> that, Func<T, bool> predicate) : int
 /// THis method returns the number of elements in the input IEnumerable<T> and counting only those elements for which the predicate returns true.
+/// 
+///8. MyAggregate<TAcc, TSource>(this IEnumerable<TSource> that, TAcc seed, Func<TAcc, TSource, TAcc> accumulator) : TAcc
+/// This method returns the result of applying the accumulator function to each element of the input IEnumerable<TSource> and the seed value.
+/// 
+// 9. MyUnion<TSource>(this IEnumerable<TSource> that, IEnumerable<TSource> other) : IEnumerable<TSource>
+// This method returns a new IEnumerable<TSource> that contains the unique elements from both the input IEnumerable<TSource> and the other IEnumerable<TSource>
+// 10. MyConcat<TSource>(this IEnumerable<TSource> that, IEnumerable<TSource> other) : IEnumerable<TSource>
+// This method returns a new IEnumerable<TSource> that contains all the elements from the input IEnumerable<TSource> followed by all the elements from the other IEnumerable<TSource>
+
 
 namespace IOApp
 
@@ -120,6 +129,31 @@ namespace IOApp
             }
             return sum;
         }
+
+        public static IEnumerable<TSource> MyUnion<TSource>(this IEnumerable<TSource> that, IEnumerable<TSource> other)
+        {
+            var hashSet = new HashSet<TSource>();
+
+            foreach (var item in that)
+                if (hashSet.Add(item))
+                    yield return item;
+
+            foreach (var item in other)
+                if (hashSet.Add(item))
+                    yield return item;
+        }
+
+        public static IEnumerable<TSource> MyConcat<TSource>(this IEnumerable<TSource> that, IEnumerable<TSource> other)
+        {
+            foreach (var item in that)
+            {
+                yield return item;
+            }
+            foreach (var item in other)
+            {
+                yield return item;
+            }
+        }
     }
     class Program
     {
@@ -127,7 +161,7 @@ namespace IOApp
         {
             //use MySelect
             var num = new List<int> { 1, 2, 3, 4, 5 };
-            var num2 = new List<int> { 2, 2, 2 };
+            var num2 = new List<int> { 2, 2, 2, 69, -420 };
 
             //num.MySelect(x => x * 2).ToList().ForEach(x => Console.WriteLine(x));
             //num.MyWhere(x => x == 5).ToList().ForEach(x => Console.WriteLine(x));
@@ -136,10 +170,32 @@ namespace IOApp
             //Console.WriteLine(num.MyCount());
             //Console.WriteLine(num.MyCount(x => x > 2));
             //Console.WriteLine(num.Aggregate(0, (a, i) => a + i));
-            Console.WriteLine(num2.Aggregate(0, (a, i) => a + i));
-            Console.WriteLine(num2.MyAggregate(0, (a, i) => a + i));
+            //Console.WriteLine(num2.Aggregate(0, (a, i) => a + i));
+            //Console.WriteLine(num2.MyAggregate(0, (a, i) => a + i));
 
+            //Returns MAXIMUM element from the list
+            // Console.WriteLine(num2.MyAggregate(0, (a, i) =>
+            // {
+            //     if (a > i) return a;
+            //     return i;
+            // }));
 
+            // //Returns MINIMUM element from the list
+            // Console.WriteLine(num2.MyAggregate(0, (a, i) =>
+            //{
+            //    if (a < i) return a;
+            //    return i;
+            //}));
+            var combined = num2.MyConcat(num);
+            var num3 = new List<int> { 1, 2, 3, 4, 5, 6, 7, 8, 9, 10 };
+            var num4 = new List<int> { 1, 2, 3, 4, 5, 6, 7, 8, 9, 10 };
+
+            var union = num3.MyUnion(num4);
+
+            foreach (var item in union)
+            {
+                Console.WriteLine(item);
+            }
             Console.ReadKey();
         }
     }
