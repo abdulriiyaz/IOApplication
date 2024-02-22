@@ -29,6 +29,15 @@
 // 10. MyConcat<TSource>(this IEnumerable<TSource> that, IEnumerable<TSource> other) : IEnumerable<TSource>
 // This method returns a new IEnumerable<TSource> that contains all the elements from the input IEnumerable<TSource> followed by all the elements from the other IEnumerable<TSource>
 
+// 11. MyUnion<TSource>(this IEnumerable<TSource> that, IEnumerable<TSource> other, IEqualityComparer<TSource> comparer) : IEnumerable<TSource>
+// This method returns a new IEnumerable<TSource> that contains the unique elements from both the input IEnumerable<TSource> and the other IEnumerable<TSource> using the specified IEqualityComparer<TSource> to compare elements.
+
+//12. MyExcept<TSource>(this IEnumerable<TSource> that, IEnumerable<TSource> other) : IEnumerable<TSource>
+// This method returns a new IEnumerable<TSource> that contains the elements from the input IEnumerable<TSource> that are not in the other IEnumerable<TSource>
+
+//13. MyIntersect<TSource>(this IEnumerable<TSource> that, IEnumerable<TSource> other) : IEnumerable<TSource>
+// This method returns a new IEnumerable<TSource> that contains the elements that are common to both the input IEnumerable<TSource> and the other IEnumerable<TSource>
+
 
 namespace IOApp
 
@@ -110,7 +119,7 @@ namespace IOApp
         public static TSource MyFirst<TSource>(this IEnumerable<TSource> source)
         {
             if (source == null)
-                throw new ArgumentNullException("Source");
+                throw new ArgumentNullException("source");
 
             foreach (var item in source)
             {
@@ -128,6 +137,13 @@ namespace IOApp
                 sum = accumulator(sum, item);
             }
             return sum;
+
+        }
+
+        public static IEnumerable<TSource> MyUnion<TSource>(this IEnumerable<TSource> that, IEnumerable<TSource> other)
+        {
+            return MyUnion(that, other, EqualityComparer<TSource>.Default);
+
         }
 
         public static IEnumerable<TSource> MyUnion<TSource>(this IEnumerable<TSource> that, IEnumerable<TSource> other, IEqualityComparer<TSource> comparer)
@@ -154,17 +170,47 @@ namespace IOApp
                 yield return item;
             }
         }
+
+        public static IEnumerable<TSource> MyExcept<TSource>(this IEnumerable<TSource> that, IEnumerable<TSource> other)
+        {
+            var blackList = new HashSet<TSource>(other);
+
+            foreach (var item in that)
+                if (blackList.Add(item))
+                    yield return item;
+        }
+
+        public static IEnumerable<TSource> MyIntersect<TSource>(this IEnumerable<TSource> that, IEnumerable<TSource> other)
+        {
+            var itemExist = new HashSet<TSource>(other);
+
+            foreach (var item in that)
+                if (itemExist.Remove(item))
+                    yield return item;
+        }
+
+        public static Dictionary<TKey, TValue> MyToDictionary<TSource, TKey, TValue>(
+            this IEnumerable<TSource> that,
+            Func<TSource, TKey> keySelector,
+            Func<TSource, TValue> valueSelector) where TKey : struct
+        {
+            var dictionary = new Dictionary<TKey, TValue>();
+            foreach (var item in that)
+            {
+                dictionary.Add(keySelector(item), valueSelector(item));
+            }
+            return dictionary;
+        }
     }
     class Program
     {
         public static void Main(string[] args)
         {
-            //use MySelect
-            var num = new List<int> { 1, 2, 3, 4, 5 };
-            var num2 = new List<int> { 2, 2, 2, 69, -420 };
+            //var num = new List<int> { 1, 2, 3, 4, 5 };
+            //var num2 = new List<int> { 2, 2, 2, 69, -420 };
 
-            var str1 = new List<string> { "Hello", "World", "I", "Am", "Here" };
-            var capsStr2 = new List<string> { "HELLO", "WORLD", "I", "AM", "HERE", "really" };
+            //var str1 = new List<string> { "Hello", "World", "I", "Am", "Here" };
+            //var capsStr2 = new List<string> { "HELLO", "WORLD", "I", "AM", "HERE", "really" };
 
             //num.MySelect(x => x * 2).ToList().ForEach(x => Console.WriteLine(x));
             //num.MyWhere(x => x == 5).ToList().ForEach(x => Console.WriteLine(x));
@@ -189,17 +235,26 @@ namespace IOApp
             //    if (a < i) return a;
             //    return i;
             //}));
-            var combined = num2.MyConcat(num);
+            //var combined = num2.MyConcat(num);
             var num3 = new List<int> { 1, 2, 3, 4, 5, 6, 7, 8, 9, 10 };
-            var num4 = new List<int> { 1, 2, 3, 4, 5, 6, 7, 8, 9, 10 };
+            var num4 = new List<int> { 1, 2, 3, 4, 5 };
 
-            var union = num3.MyUnion(num4, EqualityComparer<int>.Default);
-            var union2 = str1.MyUnion(capsStr2, StringComparer.CurrentCultureIgnoreCase);
+            //num3.MyExcept(num4).ToList().ForEach(Console.WriteLine);
+            num3.MyIntersect(num4).ToList().ForEach(Console.WriteLine);
 
-            foreach (var item in union2)
-            {
-                Console.WriteLine(item);
-            }
+            //var union = num3.MyUnion(num4);
+            //var union2 = str1.MyUnion(capsStr2, StringComparer.CurrentCultureIgnoreCase);
+
+            //foreach (var item in union)
+            //{
+            //    Console.WriteLine(item);
+            //}
+            //foreach (var item in union2)
+            //{
+            //    Console.WriteLine(item);
+            var source = new List<int> { 1, 2, 3 };
+            var dictionary = source.MyToDictionary<int, int, int>(x => x, x => x * x);
+            //}
             Console.ReadKey();
         }
     }
