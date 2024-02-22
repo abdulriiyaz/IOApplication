@@ -1,9 +1,18 @@
 ﻿//CREATE THE FOLLOWING EXTENSION METHODS ON IEnumerable<T> INTERFACE ON A CLASS CALLED EnumerableExtension
 //1. Map<TSource, TResult>(this IEnumerable<TSource> that, Func<TSource, TResult> projection) : IEnumerable<TResult>
+// This method returns a new IEnumerable<TResult> by applying the projection function to each element of the input IEnumerable<TSource>
+
 //2. Filter<T>(this IEnumerable<T> that, Func<T, bool> predicate) : IEnumerable<T>
+// This method returns a new IEnumerable<T> by applying the predicate function to each element of the input IEnumerable<T> and returning only those elements for which the predicate returns true
+
 //3. MySelect<TSource, TResult>(this IEnumerable<TSource> source, Func<TSource, TResult> projection) : IEnumerable<TResult>
+// This method returns a new IEnumerable<TResult> by applying the projection function to each element of the input IEnumerable<TSource>
+
 //4. MyWhere<TSource>(this IEnumerable<TSource> source, Func<TSource, bool> predicate) : IEnumerable<TSource>
+// This method returns a new IEnumerable<TSource> by applying the predicate function to each element of the input IEnumerable<TSource> and returning only those elements for which the predicate returns true
+
 //5. MyFirst<TSource>(this IEnumerable<TSource> source) : TSource
+// This method returns the first element of the input IEnumerable<TSource>
 
 namespace IOApp
 
