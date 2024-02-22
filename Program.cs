@@ -130,9 +130,9 @@ namespace IOApp
             return sum;
         }
 
-        public static IEnumerable<TSource> MyUnion<TSource>(this IEnumerable<TSource> that, IEnumerable<TSource> other)
+        public static IEnumerable<TSource> MyUnion<TSource>(this IEnumerable<TSource> that, IEnumerable<TSource> other, IEqualityComparer<TSource> comparer)
         {
-            var hashSet = new HashSet<TSource>();
+            var hashSet = new HashSet<TSource>(comparer);
 
             foreach (var item in that)
                 if (hashSet.Add(item))
@@ -163,6 +163,9 @@ namespace IOApp
             var num = new List<int> { 1, 2, 3, 4, 5 };
             var num2 = new List<int> { 2, 2, 2, 69, -420 };
 
+            var str1 = new List<string> { "Hello", "World", "I", "Am", "Here" };
+            var capsStr2 = new List<string> { "HELLO", "WORLD", "I", "AM", "HERE", "really" };
+
             //num.MySelect(x => x * 2).ToList().ForEach(x => Console.WriteLine(x));
             //num.MyWhere(x => x == 5).ToList().ForEach(x => Console.WriteLine(x));
 
@@ -190,9 +193,10 @@ namespace IOApp
             var num3 = new List<int> { 1, 2, 3, 4, 5, 6, 7, 8, 9, 10 };
             var num4 = new List<int> { 1, 2, 3, 4, 5, 6, 7, 8, 9, 10 };
 
-            var union = num3.MyUnion(num4);
+            var union = num3.MyUnion(num4, EqualityComparer<int>.Default);
+            var union2 = str1.MyUnion(capsStr2, StringComparer.CurrentCultureIgnoreCase);
 
-            foreach (var item in union)
+            foreach (var item in union2)
             {
                 Console.WriteLine(item);
             }
