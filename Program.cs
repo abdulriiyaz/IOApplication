@@ -14,6 +14,13 @@
 //5. MyFirst<TSource>(this IEnumerable<TSource> source) : TSource
 // This method returns the first element of the input IEnumerable<TSource>
 
+///6. MyCount<T>(this IEnumerable<T> source) : int
+/// This method returns the number of elements in the input IEnumerable<T>
+/// 
+
+///7. MyCount<T>(this IEnumerable<T> that, Func<T, bool> predicate) : int
+/// THis method returns the number of elements in the input IEnumerable<T> and counting only those elements for which the predicate returns true.
+
 namespace IOApp
 
 {
@@ -30,6 +37,28 @@ namespace IOApp
 
     static class EnumerableExtension
     {
+        public static int MyCount<TSource>(this IEnumerable<TSource> that, Func<TSource, bool> predicate)
+        {
+            int count = 0;
+
+            foreach (var item in that)
+            {
+                if (predicate(item))
+                    count++;
+            }
+            return count;
+
+        }
+        public static int MyCount<T>(this IEnumerable<T> that)
+        {
+            int count = 0;
+            foreach (var item in that)
+            {
+                count++;
+            }
+            return count;
+        }
+
         public static IEnumerable<TResult> Map<TSource, TResult>(this IEnumerable<TSource> that, Func<TSource, TResult> projection)
         {
             foreach (var item in that)
@@ -86,10 +115,14 @@ namespace IOApp
         {
             //use MySelect
             var num = new List<int> { 1, 2, 3, 4, 5 };
+
             num.MySelect(x => x * 2).ToList().ForEach(x => Console.WriteLine(x));
             num.MyWhere(x => x == 5).ToList().ForEach(x => Console.WriteLine(x));
-            var i = num.MyFirst();
-            Console.WriteLine(i);
+
+            Console.WriteLine(num.MyFirst());
+            Console.WriteLine(num.MyCount());
+            Console.WriteLine(num.MyCount(x => x > 2));
+
             Console.ReadKey();
         }
     }
