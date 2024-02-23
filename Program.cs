@@ -38,6 +38,7 @@
 // This method returns a new IEnumerable<TSource> that contains the elements that are common to both the input IEnumerable<TSource> and the other IEnumerable<TSource>
 ///14. MyToDictionary<TSource, TKey, TValue>(this IEnumerable<TSource> that, Func<TSource, TKey> keySelector, Func<TSource, TValue> valueSelector) : Dictionary<TKey, TValue>
 ///This method returns a new Dictionary<TKey, TValue> by applying the keySelector and valueSelector functions to each element of the input IEnumerable<TSource>
+///15. MyJoin<TResult, TOuter, TInner, TKey>(this IEnumerable<TOuter> outer, IEnumerable<TInner> inner, Func<TOuter, TKey> outerKeySelector, Func<TInner, TKey> innerKeySelector, Func<TOuter, TInner, TResult> projection, IEqualityComparer<TKey> comparer) : IEnumerable<TResult>
 
 namespace IOApp
 
