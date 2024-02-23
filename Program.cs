@@ -37,7 +37,8 @@
 
 //13. MyIntersect<TSource>(this IEnumerable<TSource> that, IEnumerable<TSource> other) : IEnumerable<TSource>
 // This method returns a new IEnumerable<TSource> that contains the elements that are common to both the input IEnumerable<TSource> and the other IEnumerable<TSource>
-
+///14. MyToDictionary<TSource, TKey, TValue>(this IEnumerable<TSource> that, Func<TSource, TKey> keySelector, Func<TSource, TValue> valueSelector) : Dictionary<TKey, TValue>
+///This method returns a new Dictionary<TKey, TValue> by applying the keySelector and valueSelector functions to each element of the input IEnumerable<TSource>
 
 namespace IOApp
 
@@ -54,6 +55,7 @@ namespace IOApp
     }
 
     static class EnumerableExtension
+
     {
         public static int MyCount<TSource>(this IEnumerable<TSource> that, Func<TSource, bool> predicate)
         {
@@ -253,6 +255,7 @@ namespace IOApp
             //{
             //    Console.WriteLine(item);
             var source = new List<int> { 1, 2, 3 };
+            source.GroupBy(x => x % 2).ToList().ForEach(x => Console.WriteLine(x.Key));
             var dictionary = source.MyToDictionary<int, int, int>(x => x, x => x * x);
             //}
             Console.ReadKey();
