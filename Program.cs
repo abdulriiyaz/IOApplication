@@ -44,12 +44,26 @@ namespace IOApp
 {
     class Person
     {
+        public int _id { get; private set; }
         public string _firstName { get; private set; }
         public string _lastName { get; private set; }
-        public Person(string firstName, string lastName)
+        public Person(int id, string firstName, string lastName)
         {
+            _id = id;
             _firstName = firstName;
             _lastName = lastName;
+        }
+    }
+
+    class Address
+    {
+        public int _id { get; private set; }
+        public string _street { get; private set; }
+
+        public Address(int id, string street)
+        {
+            _id = id;
+            _street = street;
         }
     }
 
@@ -189,6 +203,25 @@ namespace IOApp
                 if (itemExist.Remove(item))
                     yield return item;
         }
+        public static IEnumerable<TResult> MyJoin<TResult, TOuter, TInner, TKey>(
+            this IEnumerable<TOuter> outer,
+            IEnumerable<TInner> inner,
+            Func<TOuter, TKey> outerKeySelector,
+            Func<TInner, TKey> innerKeySelector,
+            Func<TOuter, TInner, TResult> projection,
+            IEqualityComparer<TKey> comparer)
+        {
+            var lookup = inner.ToLookup(innerKeySelector, comparer);
+
+            foreach (var item in outer)
+            {
+                var outerKey = outerKeySelector(item);
+                foreach (var innerItem in lookup[outerKey])
+                {
+                    yield return projection(item, innerItem);
+                }
+            }
+        }
 
         public static Dictionary<TKey, TValue> MyToDictionary<TSource, TKey, TValue>(
             this IEnumerable<TSource> that,
@@ -205,6 +238,7 @@ namespace IOApp
     }
     class Program
     {
+
         public static void Main(string[] args)
         {
             //var num = new List<int> { 1, 2, 3, 4, 5 };
@@ -256,6 +290,35 @@ namespace IOApp
             //var source = new List<int> { 1, 2, 3 };
             //source.GroupBy(x => x % 2).ToList().ForEach(x => Console.WriteLine(x.Key));
             //var dictionary = source.MyToDictionary<int, int, int>(x => x, x => x * x);
+            //}
+
+            //var personDb = new[]
+            //{
+            //    new Person(1,"Riyaz", "Doe"),
+            //    new Person(2,"Tom", "Doe"),
+            //    new Person(3,"Sarah", "Smith"),
+            //    new Person(4,"Jack", "Smith"),
+            //};
+
+            //var addressDb = new[]
+            //{
+            //    new Address(1, "Mumbai 4090"),
+            //    new Address(1, "Vashi 4091"),
+            //    new Address(2, "Borivali 4092"),
+            //    new Address(2, "Andheri 4093"),
+            //    new Address(3, "Govandi 4082")
+            //};
+
+            //var result = personDb.MyJoin(
+            //    addressDb,
+            //    p => p._id,
+            //    a => a._id,
+            //    (p, a) => string.Format("An Address for {0} is {1}", p._firstName, a._street),
+            //    EqualityComparer<int>.Default);
+
+            //foreach (var item in result)
+            //{
+            //    Console.WriteLine(item);
             //}
             Console.ReadKey();
         }
