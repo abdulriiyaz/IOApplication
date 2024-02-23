@@ -1,5 +1,4 @@
-﻿//CREATE THE FOLLOWING EXTENSION METHODS ON IEnumerable<T> INTERFACE ON A CLASS CALLED EnumerableExtension
-//1. Map<TSource, TResult>(this IEnumerable<TSource> that, Func<TSource, TResult> projection) : IEnumerable<TResult>
+﻿//1. Map<TSource, TResult>(this IEnumerable<TSource> that, Func<TSource, TResult> projection) : IEnumerable<TResult>
 // This method returns a new IEnumerable<TResult> by applying the projection function to each element of the input IEnumerable<TSource>
 
 //2. Filter<T>(this IEnumerable<T> that, Func<T, bool> predicate) : IEnumerable<T>
@@ -238,11 +237,11 @@ namespace IOApp
             //    return i;
             //}));
             //var combined = num2.MyConcat(num);
-            var num3 = new List<int> { 1, 2, 3, 4, 5, 6, 7, 8, 9, 10 };
-            var num4 = new List<int> { 1, 2, 3, 4, 5 };
+            //var num3 = new List<int> { 1, 2, 3, 4, 5, 6, 7, 8, 9, 10 };
+            //var num4 = new List<int> { 1, 2, 3, 4, 5 };
 
             //num3.MyExcept(num4).ToList().ForEach(Console.WriteLine);
-            num3.MyIntersect(num4).ToList().ForEach(Console.WriteLine);
+            //num3.MyIntersect(num4).ToList().ForEach(Console.WriteLine);
 
             //var union = num3.MyUnion(num4);
             //var union2 = str1.MyUnion(capsStr2, StringComparer.CurrentCultureIgnoreCase);
@@ -254,9 +253,9 @@ namespace IOApp
             //foreach (var item in union2)
             //{
             //    Console.WriteLine(item);
-            var source = new List<int> { 1, 2, 3 };
-            source.GroupBy(x => x % 2).ToList().ForEach(x => Console.WriteLine(x.Key));
-            var dictionary = source.MyToDictionary<int, int, int>(x => x, x => x * x);
+            //var source = new List<int> { 1, 2, 3 };
+            //source.GroupBy(x => x % 2).ToList().ForEach(x => Console.WriteLine(x.Key));
+            //var dictionary = source.MyToDictionary<int, int, int>(x => x, x => x * x);
             //}
             Console.ReadKey();
         }
